@@ -48,8 +48,7 @@ class IFileStorage : public IFile {
 	
 public:
 	IFileStorage(tTJSVariantString *filename, bool utf8) : utf8(utf8) {
-
-		in = TVPCreateBinaryStreamForRead(filename, "");
+		in = TVPCreateStream(filename, TJS_BS_READ);
 		if(!in) {
 			TVPThrowExceptionMessage((ttstr(TJS_W("cannot open : ")) + *filename).c_str());
 		}
@@ -718,12 +717,14 @@ asm (".ascii \" -export:V2Link=V2Link@4 -export:V2Unlink=V2Unlink@0\"");
 # endif
 #endif
 
+#ifdef _WIN32
 extern "C"
 int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason,
 	void* lpReserved)
 {
 	return 1;
 }
+#endif
 
 #endif
 
